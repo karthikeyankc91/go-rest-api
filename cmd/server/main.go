@@ -5,8 +5,12 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
-	"github.com/go-ozzo/ozzo-dbx"
-	"github.com/go-ozzo/ozzo-routing/v2"
+	"net/http"
+	"os"
+	"time"
+
+	dbx "github.com/go-ozzo/ozzo-dbx"
+	routing "github.com/go-ozzo/ozzo-routing/v2"
 	"github.com/go-ozzo/ozzo-routing/v2/content"
 	"github.com/go-ozzo/ozzo-routing/v2/cors"
 	_ "github.com/lib/pq"
@@ -15,12 +19,10 @@ import (
 	"github.com/qiangxue/go-rest-api/internal/config"
 	"github.com/qiangxue/go-rest-api/internal/errors"
 	"github.com/qiangxue/go-rest-api/internal/healthcheck"
+	"github.com/qiangxue/go-rest-api/internal/rEngine"
 	"github.com/qiangxue/go-rest-api/pkg/accesslog"
 	"github.com/qiangxue/go-rest-api/pkg/dbcontext"
 	"github.com/qiangxue/go-rest-api/pkg/log"
-	"net/http"
-	"os"
-	"time"
 )
 
 // Version indicates the current version of the application.
@@ -39,6 +41,9 @@ func main() {
 		logger.Errorf("failed to load application configuration: %s", err)
 		os.Exit(-1)
 	}
+
+	// create rules engine
+	rEngine.Start(logger)
 
 	// connect to the database
 	db, err := dbx.MustOpen("postgres", cfg.DSN)
