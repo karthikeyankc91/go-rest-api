@@ -1,0 +1,19 @@
+Notes:
+
+1) Engine 
+    -> Knowledge-Libraray
+        -> Knowledge1
+              ->  Rule1
+              ->  Rule2
+        -> Knowledge2
+              ->  Rule3
+              ->  Rule4
+        -> Knowledge3
+              ->  Rule1
+              ->  Rule3
+
+// app startup | for regular STA  (1, [2,3,4,5])
+// similar st
+        delta rules
+        -> runtime custom rules Libraray
+

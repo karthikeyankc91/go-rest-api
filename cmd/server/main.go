@@ -20,6 +20,7 @@ import (
 	"github.com/qiangxue/go-rest-api/internal/errors"
 	"github.com/qiangxue/go-rest-api/internal/healthcheck"
 	"github.com/qiangxue/go-rest-api/internal/rEngine"
+	"github.com/qiangxue/go-rest-api/internal/sta"
 	"github.com/qiangxue/go-rest-api/pkg/accesslog"
 	"github.com/qiangxue/go-rest-api/pkg/dbcontext"
 	"github.com/qiangxue/go-rest-api/pkg/log"
@@ -43,7 +44,11 @@ func main() {
 	}
 
 	// create rules engine
-	rEngine.Start(logger)
+	rulesEngine, err := rEngine.Initialize(logger)
+	if err != nil {
+		logger.Error(err)
+		os.Exit(-1)
+	}
 
 	// connect to the database
 	db, err := dbx.MustOpen("postgres", cfg.DSN)
@@ -63,7 +68,7 @@ func main() {
 	address := fmt.Sprintf(":%v", cfg.ServerPort)
 	hs := &http.Server{
 		Addr:    address,
-		Handler: buildHandler(logger, dbcontext.New(db), cfg),
+		Handler: buildHandler(logger, dbcontext.New(db), rulesEngine, cfg),
 	}
 
 	// start the HTTP server with graceful shutdown
@@ -76,7 +81,7 @@ func main() {
 }
 
 // buildHandler sets up the HTTP routing and builds an HTTP handler.
-func buildHandler(logger log.Logger, db *dbcontext.DB, cfg *config.Config) http.Handler {
+func buildHandler(logger log.Logger, db *dbcontext.DB, rulesEngine *rEngine.RuleEngine, cfg *config.Config) http.Handler {
 	router := routing.New()
 
 	router.Use(
@@ -94,6 +99,11 @@ func buildHandler(logger log.Logger, db *dbcontext.DB, cfg *config.Config) http.
 
 	album.RegisterHandlers(rg.Group(""),
 		album.NewService(album.NewRepository(db, logger), logger),
+		authHandler, logger,
+	)
+
+	sta.RegisterHandlers(rg.Group(""),
+		sta.NewService(sta.NewRepository(db, logger), rulesEngine, logger),
 		authHandler, logger,
 	)
 

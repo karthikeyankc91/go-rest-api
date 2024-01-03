@@ -16,17 +16,15 @@ var (
 )
 
 func TestStart(t *testing.T) {
-	err := rEngine.Start(logger)
+	rulesEngine, err := rEngine.Initialize(logger)
 	assert.NoError(t, err)
 
-	err = rEngine.Start(logger)
-	assert.Equal(t, "RulesEngine already started", err.Error())
-
-	rEngine.Stop()
+	assert.NotNil(t, rulesEngine.RulesEngine)
+	assert.NotNil(t, rulesEngine.Knowledge)
 }
 
 func TestRuleExecution(t *testing.T) {
-	err := rEngine.Start(logger)
+	rulesEngine, err := rEngine.Initialize(logger)
 	assert.NoError(t, err)
 
 	sta := &entity.STA{
@@ -40,25 +38,18 @@ func TestRuleExecution(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = dataContext.Add("RuleContext", &rules.RuleContext{})
+	RuleContext := &rules.RuleContext{
+		RulesMap: rulesEngine.Knowledge.RulesMap,
+	}
+	RuleContext.InitAnalysis(sta)
+	err = dataContext.Add("RuleContext", RuleContext)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	err = dataContext.Add("executionMap", &map[string]bool{})
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	findings := &[]entity.Finding{}
-	err = dataContext.Add("findings", findings)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	err = rEngine.RulesEngine.Execute(dataContext, rEngine.KnowledgeBase)
+	err = rulesEngine.RulesEngine.Execute(dataContext, rulesEngine.Knowledge.KnowlodgeBase)
 	assert.NoError(t, err)
 
-	assert.NotEmpty(t, findings)
-	assert.Equal(t, 2, len(*findings))
+	assert.NotEmpty(t, RuleContext.Analysis.FindingsMap)
+	assert.Equal(t, 2, len(RuleContext.Analysis.FindingsMap))
 }
