@@ -19,7 +19,7 @@ import (
 	"github.com/qiangxue/go-rest-api/internal/config"
 	"github.com/qiangxue/go-rest-api/internal/errors"
 	"github.com/qiangxue/go-rest-api/internal/healthcheck"
-	"github.com/qiangxue/go-rest-api/internal/rEngine"
+	"github.com/qiangxue/go-rest-api/internal/ruleengine"
 	"github.com/qiangxue/go-rest-api/internal/sta"
 	"github.com/qiangxue/go-rest-api/pkg/accesslog"
 	"github.com/qiangxue/go-rest-api/pkg/dbcontext"
@@ -44,7 +44,7 @@ func main() {
 	}
 
 	// create rules engine
-	rulesEngine, err := rEngine.Initialize(logger)
+	rulesEngine, err := ruleengine.InitializeEngine(logger, "knowledge")
 	if err != nil {
 		logger.Error(err)
 		os.Exit(-1)
@@ -81,7 +81,7 @@ func main() {
 }
 
 // buildHandler sets up the HTTP routing and builds an HTTP handler.
-func buildHandler(logger log.Logger, db *dbcontext.DB, rulesEngine *rEngine.RuleEngine, cfg *config.Config) http.Handler {
+func buildHandler(logger log.Logger, db *dbcontext.DB, rulesEngine *ruleengine.RuleEngine, cfg *config.Config) http.Handler {
 	router := routing.New()
 
 	router.Use(
