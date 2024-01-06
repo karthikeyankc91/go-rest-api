@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "rule",
-    "dateExported": "2024-01-05T03:53:55.340Z",
+    "dateExported": "2024-01-06T07:23:48.086Z",
     "version": "1.1",
     "folders": [
         {
@@ -117,22 +117,17 @@
             "_id": "241a7438-c3d7-4b68-ad4d-4bb3436bc841",
             "colId": "db5fa5ec-2c6d-4a32-bac9-9365a128b313",
             "containerId": "1f91c8b2-ffe9-4c4e-a44a-04a6c15631fd",
-            "name": "POST /v1/sta",
-            "url": "http://localhost:8080/v1/analyze",
+            "name": "POST /v1/analysis/showtech/:id",
+            "url": "http://localhost:8080/v1/analysis/showtech/2",
             "method": "POST",
             "sortNum": 30000,
             "created": "2024-01-02T09:06:54.408Z",
-            "modified": "2024-01-05T01:13:21.660Z",
+            "modified": "2024-01-06T06:58:24.175Z",
             "headers": [],
             "params": [],
-            "body": {
-                "type": "json",
-                "raw": "{\n  \"staId\": \"123\",\n  \"property1\": \"value1\",\n  \"property2\": \"value2\",\n  \"property3\": \"value3\"\n}",
-                "form": []
-            },
             "auth": {
                 "type": "bearer",
-                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MDQ2NzI5MDgsImlkIjoiMTAwIiwibmFtZSI6ImRlbW8ifQ.GEQAR3Npu91LZnw4wOPkR1ARp2tqZTp-HVEyayon4T8"
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MDQ3NzY5MTMsImlkIjoiMTAwIiwibmFtZSI6ImRlbW8ifQ.oRcOLJLXzcmCvvw7-DwXcwqBeB8Njd7m4QoruBkNFNQ"
             },
             "tests": []
         },
@@ -160,6 +155,24 @@
             "tests": []
         },
         {
+            "_id": "212b17ba-962b-433e-9df1-3796ff46de32",
+            "colId": "db5fa5ec-2c6d-4a32-bac9-9365a128b313",
+            "containerId": "1f91c8b2-ffe9-4c4e-a44a-04a6c15631fd",
+            "name": "GET /v1/analysis",
+            "url": "http://localhost:8080/v1/analysis",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2024-01-06T06:15:41.083Z",
+            "modified": "2024-01-06T06:16:44.475Z",
+            "headers": [],
+            "params": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MDQ3NzY5MTMsImlkIjoiMTAwIiwibmFtZSI6ImRlbW8ifQ.oRcOLJLXzcmCvvw7-DwXcwqBeB8Njd7m4QoruBkNFNQ"
+            },
+            "tests": []
+        },
+        {
             "_id": "ea8fafe0-514c-46e1-85f5-f69d4ca9af1d",
             "colId": "db5fa5ec-2c6d-4a32-bac9-9365a128b313",
             "containerId": "73d39d83-9f00-4aef-a734-3e03c3714987",
@@ -174,6 +187,24 @@
             "auth": {
                 "type": "bearer",
                 "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MDQzOTY3NzQsImlkIjoiMTAwIiwibmFtZSI6ImRlbW8ifQ.bmROMjFy4w3dKLJbRbTF7BaleA9gwLjw6bgGJjmWODo"
+            },
+            "tests": []
+        },
+        {
+            "_id": "d2605eb2-af6a-446f-936f-c0a994436d1d",
+            "colId": "db5fa5ec-2c6d-4a32-bac9-9365a128b313",
+            "containerId": "1f91c8b2-ffe9-4c4e-a44a-04a6c15631fd",
+            "name": "POST /v1/analysis/:id",
+            "url": "http://localhost:8080/v1/analysis/b0a24f12-428f-4ff5-84d5-bc1fdcff6f03",
+            "method": "GET",
+            "sortNum": 50000,
+            "created": "2024-01-06T06:15:42.643Z",
+            "modified": "2024-01-06T06:17:17.697Z",
+            "headers": [],
+            "params": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MDQ3NzY5MTMsImlkIjoiMTAwIiwibmFtZSI6ImRlbW8ifQ.oRcOLJLXzcmCvvw7-DwXcwqBeB8Njd7m4QoruBkNFNQ"
             },
             "tests": []
         },
