@@ -16,10 +16,10 @@ type Knowledge struct {
 	KnowledgeString string
 }
 
-type KnowledgeMap map[string]*Knowledge
+type Knowledgemap map[string]*Knowledge
 
-func CreateKnowledge(logger log.Logger, knowledgeFolder string) (*ast.KnowledgeBase, *KnowledgeMap, error) {
-	knowledgeMap := make(KnowledgeMap)
+func CreateKnowledge(logger log.Logger, knowledgeFolder string) (*ast.KnowledgeBase, *Knowledgemap, error) {
+	knowledgeMap := make(Knowledgemap)
 
 	files, err := os.ReadDir(knowledgeFolder)
 	if err != nil {

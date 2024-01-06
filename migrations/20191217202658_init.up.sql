@@ -10,6 +10,7 @@ CREATE TABLE
     analysis (
         id VARCHAR PRIMARY KEY,
         staId VARCHAR NOT NULL,
+        knowledgeMap JSON NOT NULL,
         created_at TIMESTAMP NOT NULL,
         updated_at TIMESTAMP NOT NULL
     );

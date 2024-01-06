@@ -3,6 +3,7 @@ package sta
 import (
 	"context"
 
+	dbx "github.com/go-ozzo/ozzo-dbx"
 	"github.com/qiangxue/go-rest-api/internal/entity"
 	"github.com/qiangxue/go-rest-api/pkg/dbcontext"
 	"github.com/qiangxue/go-rest-api/pkg/log"
@@ -12,6 +13,8 @@ import (
 type Repository interface {
 	// Get returns the analysis with the specified analysis ID.
 	Get(ctx context.Context, id string) (entity.Analysis, error)
+	// Get returns the analysis with the specified analysis ID.
+	GetByStaid(ctx context.Context, id string) (entity.Analysis, error)
 	// Count returns the number of analysis.
 	Count(ctx context.Context) (int, error)
 	// Query returns the list of analysis with the given offset and limit.
@@ -39,6 +42,17 @@ func NewRepository(db *dbcontext.DB, logger log.Logger) Repository {
 func (r repository) Get(ctx context.Context, id string) (entity.Analysis, error) {
 	var analysis entity.Analysis
 	err := r.db.With(ctx).Select().Model(id, &analysis)
+	return analysis, err
+}
+
+// Get reads the analysis with the specified ID from the database.
+func (r repository) GetByStaid(ctx context.Context, id string) (entity.Analysis, error) {
+	var analysis entity.Analysis
+	err := r.db.With(ctx).
+		Select("id", "staid", "knowledgemap", "created_at", "updated_at").
+		From("analysis").
+		Where(dbx.HashExp{"staid": id}).
+		One(&analysis)
 	return analysis, err
 }
 

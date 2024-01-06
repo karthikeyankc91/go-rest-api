@@ -22,17 +22,17 @@ func TestEngineStartup(t *testing.T) {
 	assert.NotNil(t, rulesEngine.RulesEngine)
 	assert.NotNil(t, rulesEngine.AllKnowledge)
 
-	assert.NotNil(t, rulesEngine.KnowledgeMap)
-	assert.Equal(t, 2, len(*rulesEngine.KnowledgeMap))
-	assert.Equal(t, "knowledge1", (*rulesEngine.KnowledgeMap)["knowledge1"].KnowledgeName)
-	assert.Equal(t, "knowledge2", (*rulesEngine.KnowledgeMap)["knowledge2"].KnowledgeName)
+	assert.NotNil(t, rulesEngine.Knowledgemap)
+	assert.Equal(t, 2, len(*rulesEngine.Knowledgemap))
+	assert.Equal(t, "knowledge1", (*rulesEngine.Knowledgemap)["knowledge1"].KnowledgeName)
+	assert.Equal(t, "knowledge2", (*rulesEngine.Knowledgemap)["knowledge2"].KnowledgeName)
 
-	assert.Equal(t, 2, len(*((*rulesEngine.KnowledgeMap)["knowledge1"]).RulesMap))
-	assert.Equal(t, 2, len(*((*rulesEngine.KnowledgeMap)["knowledge2"]).RulesMap))
-	assert.Equal(t, "rule1", (*((*rulesEngine.KnowledgeMap)["knowledge1"]).RulesMap)["rule1"].RuleName)
-	assert.Equal(t, "rule2", (*((*rulesEngine.KnowledgeMap)["knowledge1"]).RulesMap)["rule2"].RuleName)
-	assert.Equal(t, "rule1", (*((*rulesEngine.KnowledgeMap)["knowledge2"]).RulesMap)["rule1"].RuleName)
-	assert.Equal(t, "rule2", (*((*rulesEngine.KnowledgeMap)["knowledge2"]).RulesMap)["rule2"].RuleName)
+	assert.Equal(t, 2, len(*((*rulesEngine.Knowledgemap)["knowledge1"]).RulesMap))
+	assert.Equal(t, 2, len(*((*rulesEngine.Knowledgemap)["knowledge2"]).RulesMap))
+	assert.Equal(t, "rule1", (*((*rulesEngine.Knowledgemap)["knowledge1"]).RulesMap)["rule1"].RuleName)
+	assert.Equal(t, "rule2", (*((*rulesEngine.Knowledgemap)["knowledge1"]).RulesMap)["rule2"].RuleName)
+	assert.Equal(t, "rule1", (*((*rulesEngine.Knowledgemap)["knowledge2"]).RulesMap)["rule1"].RuleName)
+	assert.Equal(t, "rule2", (*((*rulesEngine.Knowledgemap)["knowledge2"]).RulesMap)["rule2"].RuleName)
 }
 
 func TestEngineExecution(t *testing.T) {
@@ -40,10 +40,10 @@ func TestEngineExecution(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotNil(t, rulesEngine.RulesEngine)
 	assert.NotNil(t, rulesEngine.AllKnowledge)
-	assert.NotNil(t, rulesEngine.KnowledgeMap)
+	assert.NotNil(t, rulesEngine.Knowledgemap)
 
 	sta := &entity.STA{
-		StaId: "sta1",
+		Id: "sta1",
 	}
 
 	dataContext := ast.NewDataContext()
@@ -53,7 +53,7 @@ func TestEngineExecution(t *testing.T) {
 	err = dataContext.Add("ctx", &testcontext.RuleContext{})
 	assert.NoError(t, err)
 
-	analysis := &entity.Analysis{}
+	analysis := &entity.AnalysisData{}
 	analysis.Init(sta)
 	err = dataContext.Add("analysis", analysis)
 	assert.NoError(t, err)
@@ -61,7 +61,7 @@ func TestEngineExecution(t *testing.T) {
 	err = rulesEngine.RulesEngine.Execute(dataContext, rulesEngine.AllKnowledge)
 	assert.NoError(t, err)
 
-	kMap := *analysis.KnowledgeMap
+	kMap := *analysis.Knowledgemap
 	assert.Equal(t, 2, len(kMap))
 	assert.Equal(t, "knowledge1", (kMap)["knowledge1"].KnowledgeName)
 	assert.Equal(t, "knowledge2", kMap["knowledge2"].KnowledgeName)

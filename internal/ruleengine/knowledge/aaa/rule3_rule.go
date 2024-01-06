@@ -5,20 +5,20 @@ import (
 )
 
 var (
-	Name_rule2        = "rule2"
-	Description_rule2 = "This is rule1"
+	Name_rule3        = "rule3"
+	Description_rule3 = "This is rule3"
 )
 
-func When_rule2(sta *entity.STA) bool {
+func When_rule3(sta *entity.STA) bool {
 	return sta.Id != ""
 }
 
-func Then_rule2(sta *entity.STA) *entity.Finding {
+func Then_rule3(sta *entity.STA) *entity.Finding {
 	// execute then for rule1
 
 	return &entity.Finding{
 		FindingType: entity.Success,
-		Desc:        "executed then for aaa rule2",
+		Desc:        "executed then for aaa rule3",
 		Status:      true,
 	}
 }

@@ -10,7 +10,7 @@ var (
 )
 
 func When_rule1(sta *entity.STA) bool {
-	return sta.StaId != ""
+	return sta.Id != ""
 }
 
 func Then_rule1(sta *entity.STA) *entity.Finding {

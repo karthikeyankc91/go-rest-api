@@ -7,10 +7,10 @@ import (
 	"time"
 
 	"github.com/qiangxue/go-rest-api/internal/entity"
+	"github.com/qiangxue/go-rest-api/internal/showtech/parser"
 	"github.com/qiangxue/go-rest-api/internal/test"
 	"github.com/qiangxue/go-rest-api/pkg/log"
 	"github.com/stretchr/testify/assert"
-	"gitlab.aristanetworks.com/tac-tools/show-tech-analyzer/backend/pkg/showtech/parser"
 )
 
 func TestRepository(t *testing.T) {
@@ -25,40 +25,47 @@ func TestRepository(t *testing.T) {
 	count, err := repo.Count(ctx)
 	assert.Nil(t, err)
 
-	parsedData := &parser.Commands{}
+	showtechData := entity.STA{
+		Id: "1",
+		Data: &parser.Commands{
+			ShowArp: parser.ShowArp{
+				Output: parser.Output{
+					Meta: parser.Meta{
+						Command: "show arp",
+					},
+				},
+			},
+		},
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+
+	showtechs, err := showtechData.Marshal()
+	assert.Nil(t, err)
+
 	// create
-	err = repo.Create(ctx, entity.STA{
-		StaId:      "1",
-		ParsedData: parsedData,
-		CreatedAt:  time.Now(),
-		UpdatedAt:  time.Now(),
-	})
+	err = repo.Create(ctx, showtechs)
 	assert.Nil(t, err)
 	count2, _ := repo.Count(ctx)
 	assert.Equal(t, 1, count2-count)
 
 	// get
-	showtech, err := repo.Get(ctx, "1")
+	showtechs, err = repo.Get(ctx, "1")
 	assert.Nil(t, err)
-	assert.Equal(t, "1", showtech.StaId)
+	assert.Equal(t, "1", showtechs.Id)
 	_, err = repo.Get(ctx, "2")
 	assert.Equal(t, sql.ErrNoRows, err)
 
 	// update
-	err = repo.Update(ctx, entity.STA{
-		StaId:      "1",
-		ParsedData: parsedData,
-		CreatedAt:  time.Now(),
-		UpdatedAt:  time.Now(),
-	})
+	err = repo.Update(ctx, showtechs)
 	assert.Nil(t, err)
-	showtech, _ = repo.Get(ctx, "1")
-	assert.Equal(t, "1", showtech.StaId)
+	showtechs, _ = repo.Get(ctx, "1")
+	assert.Equal(t, "1", showtechs.Id)
 
 	// query
-	showtechs, err := repo.Query(ctx, 0, count2)
+	showtechsList, err := repo.Query(ctx, 0, count2)
 	assert.Nil(t, err)
-	assert.Equal(t, count2, len(showtechs))
+	assert.Equal(t, count2, len(showtechsList))
 
 	// delete
 	err = repo.Delete(ctx, "1")

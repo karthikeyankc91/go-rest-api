@@ -20,6 +20,7 @@ import (
 	"github.com/qiangxue/go-rest-api/internal/errors"
 	"github.com/qiangxue/go-rest-api/internal/healthcheck"
 	"github.com/qiangxue/go-rest-api/internal/ruleengine"
+	"github.com/qiangxue/go-rest-api/internal/showtech"
 	"github.com/qiangxue/go-rest-api/internal/sta"
 	"github.com/qiangxue/go-rest-api/pkg/accesslog"
 	"github.com/qiangxue/go-rest-api/pkg/dbcontext"
@@ -102,8 +103,10 @@ func buildHandler(logger log.Logger, db *dbcontext.DB, rulesEngine *ruleengine.R
 		authHandler, logger,
 	)
 
+	showtech.NewRepository(db, logger)
+
 	sta.RegisterHandlers(rg.Group(""),
-		sta.NewService(sta.NewRepository(db, logger), rulesEngine, logger),
+		sta.NewService(sta.NewRepository(db, logger), showtech.NewRepository(db, logger), rulesEngine, logger),
 		authHandler, logger,
 	)
 

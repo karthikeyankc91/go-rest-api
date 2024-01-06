@@ -17,7 +17,7 @@ var (
 type RuleEngine struct {
 	RulesEngine  *engine.GruleEngine
 	AllKnowledge *ast.KnowledgeBase
-	KnowledgeMap *KnowledgeMap
+	Knowledgemap *Knowledgemap
 }
 
 func InitializeEngine(logger log.Logger, rulesFolder string) (*RuleEngine, error) {
@@ -29,6 +29,6 @@ func InitializeEngine(logger log.Logger, rulesFolder string) (*RuleEngine, error
 	return &RuleEngine{
 		RulesEngine:  engine.NewGruleEngine(),
 		AllKnowledge: allKnowledge,
-		KnowledgeMap: knowledgeMap,
+		Knowledgemap: knowledgeMap,
 	}, nil
 }

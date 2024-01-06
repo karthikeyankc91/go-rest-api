@@ -1,17 +1,27 @@
 package entity
 
 import (
+	"encoding/json"
 	"fmt"
 	"time"
 )
 
-type Analysis struct {
+type AnalysisData struct {
 	ID        string    `json:"id"`
+	Staid     string    `json:"staid"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 
-	StaId        string                `json:"staId"`
-	KnowledgeMap *map[string]Knowledge `json:"knowledgeMap"`
+	Knowledgemap *map[string]Knowledge `json:"knowledgeMap"`
+}
+
+type Analysis struct {
+	ID        string    `json:"id"`
+	Staid     string    `json:"staid"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+
+	Knowledgemap json.RawMessage `json:"knowledgeMap"`
 }
 
 type Knowledge struct {
@@ -40,18 +50,18 @@ const (
 	Unknown FindingType = "Unknown"
 )
 
-func (a *Analysis) Init(sta *STA) {
+func (a *AnalysisData) Init(sta *STA) {
 	a.ID = GenerateID()
-	a.StaId = sta.StaId
+	a.Staid = sta.Id
 	now := time.Now()
 	a.CreatedAt = now
 	a.UpdatedAt = now
 	newMap := make(map[string]Knowledge)
-	a.KnowledgeMap = &newMap
+	a.Knowledgemap = &newMap
 }
 
-func (a *Analysis) AddKnowledge(knowledgeName string) (*Knowledge, error) {
-	knowledge := (*(a.KnowledgeMap))[knowledgeName]
+func (a *AnalysisData) AddKnowledge(knowledgeName string) (*Knowledge, error) {
+	knowledge := (*(a.Knowledgemap))[knowledgeName]
 
 	//knowledge already added case
 	if knowledge.KnowledgeName != "" {
@@ -61,12 +71,12 @@ func (a *Analysis) AddKnowledge(knowledgeName string) (*Knowledge, error) {
 	knowledge.KnowledgeName = knowledgeName
 	newMap := make(map[string]RuleFinding)
 	knowledge.RuleFindingsMap = &newMap
-	(*(a.KnowledgeMap))[knowledgeName] = knowledge
+	(*(a.Knowledgemap))[knowledgeName] = knowledge
 	return &knowledge, nil
 }
 
-func (a *Analysis) GetKnowledge(knowledgeName string) (*Knowledge, error) {
-	knowledge, ok := (*(a.KnowledgeMap))[knowledgeName]
+func (a *AnalysisData) GetKnowledge(knowledgeName string) (*Knowledge, error) {
+	knowledge, ok := (*(a.Knowledgemap))[knowledgeName]
 	if !ok {
 		return nil, fmt.Errorf("knowledge %s not found", knowledgeName)
 	}
@@ -97,4 +107,39 @@ func (k *Knowledge) GetRuleFinding(ruleName string) (*RuleFinding, error) {
 
 func (f *RuleFinding) AddFinding(finding *Finding) {
 	// f.Findings = append(f.Findings, *finding)
+}
+
+func (analysis Analysis) UnmarshalAnalysis() (AnalysisData, error) {
+	byteArr, err := analysis.Knowledgemap.MarshalJSON()
+	if err != nil {
+		return AnalysisData{}, err
+	}
+
+	m := make(map[string]Knowledge)
+	err = json.Unmarshal(byteArr, &m)
+	if err != nil {
+		return AnalysisData{}, err
+	}
+
+	return AnalysisData{
+		ID:           analysis.ID,
+		Staid:        analysis.Staid,
+		CreatedAt:    analysis.CreatedAt,
+		UpdatedAt:    analysis.UpdatedAt,
+		Knowledgemap: &m,
+	}, nil
+}
+
+func (analysisData AnalysisData) MarshalAnalysis() (Analysis, error) {
+	byteArray, err := json.Marshal(analysisData.Knowledgemap)
+	if err != nil {
+		return Analysis{}, err
+	}
+	return Analysis{
+		ID:           analysisData.ID,
+		Staid:        analysisData.Staid,
+		CreatedAt:    analysisData.CreatedAt,
+		UpdatedAt:    analysisData.UpdatedAt,
+		Knowledgemap: json.RawMessage(byteArray),
+	}, nil
 }

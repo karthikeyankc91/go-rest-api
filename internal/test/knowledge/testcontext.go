@@ -9,13 +9,13 @@ import (
 type RuleContext struct {
 }
 
-func (b *RuleContext) ExecWhen(knowledgeName string, ruleName string, ruleWhenResult bool, analysis *entity.Analysis) bool {
+func (b *RuleContext) ExecWhen(knowledgeName string, ruleName string, ruleWhenResult bool, analysis *entity.AnalysisData) bool {
 	knowledge, _ := analysis.AddKnowledge(knowledgeName)
 	knowledge.AddRuleFinding(ruleName, ruleWhenResult)
 	return ruleWhenResult
 }
 
-func (b *RuleContext) ExecThen(knowledgeName string, ruleName string, finding *entity.Finding, analysis *entity.Analysis) {
+func (b *RuleContext) ExecThen(knowledgeName string, ruleName string, finding *entity.Finding, analysis *entity.AnalysisData) {
 	knowledge, _ := analysis.GetKnowledge(knowledgeName)
 	ruleFinding, _ := knowledge.GetRuleFinding(ruleName)
 	findings := ruleFinding.Findings

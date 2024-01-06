@@ -12,7 +12,7 @@ Notes:
               ->  Rule1
               ->  Rule3
 
-// app startup | for regular STA  (1, [2,3,4,5])
+// app startup | for regular Showtech  (1, [2,3,4,5])
 // similar st
         delta rules
         -> runtime custom rules Libraray

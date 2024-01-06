@@ -16,8 +16,8 @@ type Rule struct {
 	Desc          string
 	KnowledgeName string
 	RuleStr       string
-	// When     func(*entity.STA) bool
-	// Then     func(*entity.STA) *entity.RuleFinding
+	// When     func(*entity.Showtechs) bool
+	// Then     func(*entity.Showtechs) *entity.RuleFinding
 }
 
 type RulesMap map[string]*Rule
