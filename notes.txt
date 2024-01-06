@@ -1,19 +1,8 @@
 Notes:
 
-1) Engine 
-    -> Knowledge-Libraray
-        -> Knowledge1
-              ->  Rule1
-              ->  Rule2
-        -> Knowledge2
-              ->  Rule3
-              ->  Rule4
-        -> Knowledge3
-              ->  Rule1
-              ->  Rule3
-
-// app startup | for regular Showtech  (1, [2,3,4,5])
-// similar st
-        delta rules
-        -> runtime custom rules Libraray
-
+1) DONT maintain two structs for that stupid db json thing
+2) sta package to me renamed as analysis
+3) write test cases for rule engine and api repo service changes
+4) create new errors for functionality
+5) migrate rules
+6) call with each actual sta id
