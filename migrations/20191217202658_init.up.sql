@@ -13,3 +13,11 @@ CREATE TABLE
         created_at TIMESTAMP NOT NULL,
         updated_at TIMESTAMP NOT NULL
     );
+
+CREATE TABLE
+    showtechs (
+        id VARCHAR PRIMARY KEY,
+        parsed_data JSON NOT NULL,
+        created_at TIMESTAMP NOT NULL,
+        updated_at TIMESTAMP NOT NULL
+    );

@@ -55,10 +55,7 @@ func (s service) Analyze(context context.Context, request CreateSTARequest) (*en
 	}
 
 	sta := &entity.STA{
-		StaId:     request.StaId,
-		Property1: request.Property1,
-		Property2: request.Property2,
-		Property3: request.Property3,
+		StaId: request.StaId,
 	}
 
 	dataContext := ast.NewDataContext()

@@ -43,10 +43,7 @@ func TestEngineExecution(t *testing.T) {
 	assert.NotNil(t, rulesEngine.KnowledgeMap)
 
 	sta := &entity.STA{
-		StaId:     "sta1",
-		Property1: "value1",
-		Property2: "value2",
-		Property3: "value3",
+		StaId: "sta1",
 	}
 
 	dataContext := ast.NewDataContext()

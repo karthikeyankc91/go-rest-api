@@ -1,10 +1,16 @@
 package entity
 
-// Album represents an album record.
-type STA struct {
-	StaId string `json:"staId"`
+import (
+	"time"
 
-	Property1 string `json:"property1"`
-	Property2 string `json:"property2"`
-	Property3 string `json:"property3"`
+	"gitlab.aristanetworks.com/tac-tools/show-tech-analyzer/backend/pkg/showtech/parser"
+)
+
+// STA represents an STA record.
+type STA struct {
+	StaId string `json:"id"`
+
+	ParsedData *parser.Commands `json:"parsed_data"`
+	CreatedAt  time.Time        `json:"created_at"`
+	UpdatedAt  time.Time        `json:"updated_at"`
 }
